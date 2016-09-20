@@ -1,0 +1,70 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
+    <edmx:DataServices
+        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+        <Schema
+            xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+            xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="movies.movies">
+            <EntityType Name="MoviesType">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="255"/>
+                <Property Name="TITLE" Type="Edm.String" MaxLength="255"/>
+                <Property Name="YEAR" Type="Edm.Int32"/>
+                <Property Name="RATED" Type="Edm.String" MaxLength="255"/>
+                <Property Name="RELEASED" Type="Edm.String" MaxLength="255"/>
+                <Property Name="RUNTIME" Type="Edm.String" MaxLength="255"/>
+                <Property Name="GENRE" Type="Edm.String" MaxLength="255"/>
+                <Property Name="DIRECTOR" Type="Edm.String" MaxLength="255"/>
+                <Property Name="WRITER" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ACTORS" Type="Edm.String" MaxLength="255"/>
+                <Property Name="PLOT" Type="Edm.String" MaxLength="255"/>
+                <Property Name="LANGUAGE" Type="Edm.String" MaxLength="255"/>
+                <Property Name="COUNTRY" Type="Edm.String" MaxLength="255"/>
+                <Property Name="POSTER" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="Actors" Relationship="movies.movies.Movie_ActorsType" FromRole="MoviesPrincipal" ToRole="ActorsDependent"/>
+                <NavigationProperty Name="Ratings" Relationship="movies.movies.Movie_RatingsType" FromRole="MoviesPrincipal" ToRole="RatingsDependent"/>
+            </EntityType>
+            <EntityType Name="ActorsType">
+                <Key>
+                    <PropertyRef Name="MOVIEID"/>
+                    <PropertyRef Name="ACTOR"/>
+                </Key>
+                <Property Name="MOVIEID" Type="Edm.String" Nullable="false" MaxLength="255"/>
+                <Property Name="ACTOR" Type="Edm.String" Nullable="false" MaxLength="255"/>
+            </EntityType>
+            <EntityType Name="RatingsType">
+                <Key>
+                    <PropertyRef Name="MOVIEID"/>
+                    <PropertyRef Name="USER"/>
+                </Key>
+                <Property Name="MOVIEID" Type="Edm.String" Nullable="false" MaxLength="255"/>
+                <Property Name="USER" Type="Edm.String" Nullable="false" MaxLength="255"/>
+                <Property Name="RATING" Type="Edm.Int32"/>
+            </EntityType>
+            <Association Name="Movie_ActorsType">
+                <End Type="movies.movies.MoviesType" Role="MoviesPrincipal" Multiplicity="1"/>
+                <End Type="movies.movies.ActorsType" Role="ActorsDependent" Multiplicity="*"/>
+            </Association>
+            <Association Name="Movie_RatingsType">
+                <End Type="movies.movies.MoviesType" Role="MoviesPrincipal" Multiplicity="1"/>
+                <End Type="movies.movies.RatingsType" Role="RatingsDependent" Multiplicity="*"/>
+            </Association>
+            <EntityContainer Name="movies" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Movies" EntityType="movies.movies.MoviesType"/>
+                <EntitySet Name="Actors" EntityType="movies.movies.ActorsType"/>
+                <EntitySet Name="Ratings" EntityType="movies.movies.RatingsType"/>
+                <AssociationSet Name="Movie_Actors" Association="movies.movies.Movie_ActorsType">
+                    <End Role="MoviesPrincipal" EntitySet="Movies"/>
+                    <End Role="ActorsDependent" EntitySet="Actors"/>
+                </AssociationSet>
+                <AssociationSet Name="Movie_Ratings" Association="movies.movies.Movie_RatingsType">
+                    <End Role="MoviesPrincipal" EntitySet="Movies"/>
+                    <End Role="RatingsDependent" EntitySet="Ratings"/>
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

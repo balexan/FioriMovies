@@ -1,0 +1,152 @@
+<mvc:View
+	controllerName="movies.sap.com.controller.Detail"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:l="sap.ui.layout"
+	xmlns:footerbar="sap.ushell.ui.footerbar">
+
+	<semantic:DetailPage
+		id="page"
+		navButtonPress="onNavBack"
+		showNavButton="{device>/system/phone}"
+		title="{i18n>detailTitle}"
+		busy="{detailView>/busy}"
+		busyIndicatorDelay="{detailView>/delay}">
+		<semantic:positiveAction>
+	        <semantic:PositiveAction id="approveButton" text="Rate Movie" press="onApprove" />
+	   </semantic:positiveAction>
+		<semantic:content>
+			<ObjectHeader
+				id="objectHeader"
+				title="{TITLE}"
+				number="{
+					path: 'YEAR'
+				}"
+>
+			</ObjectHeader>
+			
+			<FlexBox
+					height="500px"
+					alignItems="Start"
+					justifyContent="Center">
+					<items>
+						<Image height="500px" src="{POSTER}" />
+					</items>
+				</FlexBox>
+
+			<Table
+				id="ratingsTable"
+				width="auto"
+				items="{Ratings}"
+				updateFinished="onListUpdateFinished"
+				noDataText="{i18n>detailLineItemTableNoDataText}"
+				busyIndicatorDelay="{detailView>/lineItemTableDelay}"
+				class="sapUiResponsiveMargin">
+				<headerToolbar>
+					<Toolbar id="RatingsToolbar">
+						<Title
+							id="RatingsHeader"
+							text="Ratings"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text="User"/>
+					</Column>
+					<Column
+						minScreenWidth="Tablet"
+						demandPopin="true"
+						hAlign="Right">
+						<Text text="Ratings"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier
+								title="{USER}"/>
+							<RatingIndicator value="{RATING}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			
+			
+			<Table
+				id="lineItemsList"
+				width="auto"
+				items="{Actors}"
+				updateFinished="onListUpdateFinished"
+				noDataText="{i18n>detailLineItemTableNoDataText}"
+				busyIndicatorDelay="{detailView>/lineItemTableDelay}"
+				class="sapUiResponsiveMargin">
+				<headerToolbar>
+					<Toolbar id="lineItemsToolbar">
+						<Title
+							id="lineItemsHeader"
+							text="{detailView>/lineItemListTitle}"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text="{i18n>detailLineItemTableIDColumn}"/>
+					</Column>
+					<Column
+						minScreenWidth="Tablet"
+						demandPopin="true"
+						hAlign="Right">
+						<Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier
+								title="{ACTOR}"
+								text="{ACTOR}"/>
+							<ObjectNumber
+/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			
+		<Dialog id="approvalDialog" title="{approvalProperties>/approvalTitle}" class="sapUiContentPadding">
+		<content>
+			<l:VerticalLayout id="textLayout" width="100%">
+				<Input id="user" placeholder="Please rate the movie {TITLE}" />
+				<RatingIndicator id="rating" />
+			</l:VerticalLayout>
+		</content>	
+		<beginButton>
+			<Button id="confirmButton" text="Confirm" press="onConfirmAction" />
+		</beginButton>
+		<endButton>
+			<Button id="cancelButton" text="Cancel" press="onCancelAction" />
+		</endButton>
+	</Dialog>		
+		</semantic:content>
+
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction
+				id="shareEmail"
+				press="onShareEmailPress"/>
+		</semantic:sendEmailAction>
+
+		<semantic:shareInJamAction>
+			<semantic:ShareInJamAction
+				id="shareInJam"
+				visible="{FLP>/isShareInJamActive}"
+				press="onShareInJamPress"/>
+		</semantic:shareInJamAction>
+
+		<semantic:saveAsTileAction>
+			<footerbar:AddBookmarkButton
+				id="shareTile"
+				title="{detailView>/saveAsTileTitle}"/>
+		</semantic:saveAsTileAction>
+
+	</semantic:DetailPage>
+
+</mvc:View>
